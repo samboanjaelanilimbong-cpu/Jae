@@ -1,1 +1,445 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NutriBite - Resep Makanan & Minuman Sehat</title>
+    <meta name="description" content="Kumpulan resep makanan dan minuman sehat yang lezat, praktis, dan kaya nutrisi untuk gaya hidup lebih baik." />
+    <style>
+        :root {
+            --bg: #f5f8f6;
+            --card: #ffffff;
+            --primary: #1b4332;
+            --secondary: #2d6a4f;
+            --accent: #52b788;
+            --accent-light: #d8f3dc;
+            --text: #2d3748;
+            --text-muted: #718096;
+            --radius: 16px;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: var(--card);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        /* Hero Section */
+        .hero {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 32px;
+            color: var(--primary);
+            margin-bottom: 12px;
+            font-weight: 800;
+        }
+
+        .hero p {
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 24px auto;
+            font-size: 16px;
+        }
+
+        /* Filter Tabs */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .tab-btn {
+            background-color: var(--card);
+            border: 2px solid transparent;
+            color: var(--text-muted);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background-color: var(--accent-light);
+            color: var(--primary);
+            border-color: var(--accent);
+        }
+
+        /* Recipe Grid & Cards */
+        .recipe-grid {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .recipe-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .recipe-image {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Generator background warna estetik untuk makanan/minuman */
+        .bg-food { background: linear-gradient(135deg, #ffedd5, #fdba74); }
+        .bg-salad { background: linear-gradient(135deg, #dcfce7, #86efac); }
+        .bg-smoothie { background: linear-gradient(135deg, #fce7f3, #fbcfe8); }
+        .bg-drink { background: linear-gradient(135deg, #e0f2fe, #bae6fd); }
+
+        .recipe-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+        }
+
+        .recipe-content {
+            padding: 24px;
+        }
+
+        .recipe-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .recipe-title {
+            font-size: 20px;
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .recipe-desc {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .recipe-details-section {
+            border-top: 1px dashed #e2e8f0;
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .recipe-list {
+            list-style-type: none;
+            padding-left: 0;
+            font-size: 13px;
+            color: var(--text);
+            margin-bottom: 15px;
+        }
+
+        .recipe-list li {
+            margin-bottom: 4px;
+            position: relative;
+            padding-left: 15px;
+        }
+
+        .recipe-list li::before {
+            content: "•";
+            color: var(--accent);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .nutrition-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .tag {
+            background: var(--bg);
+            color: var(--secondary);
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 14px;
+            max-width: 1000px;
+            margin: 40px auto 0 auto;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 26px; }
+            .recipe-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo">🥗 Nutri<span>Bite</span></a>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Resep Makanan & Minuman Sehat</h1>
+            <p>Mulai hidup sehat dengan hidangan yang tidak hanya bernutrisi tinggi, tetapi juga memanjakan lidah Anda. Praktis, bersih, dan lezat!</p>
+            
+            <div class="tabs">
+                <button class="tab-btn active">Semua Resep</button>
+            </div>
+        </section>
+
+        <section class="recipe-grid">
+
+            <article class="recipe-card">
+                <div class="recipe-image bg-food">
+                    <span class="recipe-badge">Makanan</span>
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#1b4332" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+                <div class="recipe-content">
+                    <div class="recipe-meta">
+                        <span>⏰ 15 Menit</span>
+                        <span>🔥 Mudah</span>
+                    </div>
+                    <h2 class="recipe-title">Oatmeal Mangga Kelapa</h2>
+                    <p class="recipe-desc">Sarapan tinggi serat yang manis alami, memberikan energi stabil untuk aktivitas pagi Anda tanpa bikin begah.</p>
+                    
+                    <div class="recipe-details-section">
+                        <h3 class="section-title">Bahan Utama:</h3>
+                        <ul class="recipe-list">
+                            <li>4 sdm Rolled Oats / Oatmeal instan</li>
+                            <li>200 ml Susu Almond rendah kalori</li>
+                            <li>1/2 buah Mangga matang (potong dadu)</li>
+                            <li>1 sdm Parutan kelapa kering / Chia seeds</li>
+                        </ul>
+
+                        <h3 class="section-title">Cara Membuat:</h3>
+                        <ul class="recipe-list">
+                            <li>Masak oat dengan susu almond selama 5 menit hingga mengental.</li>
+                            <li>Tuang ke mangkuk, hias dengan potongan mangga segar di atasnya.</li>
+                            <li>Taburkan parutan kelapa kering dan chia seeds. Siap disajikan hangat!</li>
+                        </ul>
+                    </div>
+
+                    <div class="nutrition-tags">
+                        <span class="tag">Tinggi Serat</span>
+                        <span class="tag">Vegan Friendly</span>
+                        <span class="tag">Bebas Kolesterol</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="recipe-card">
+                <div class="recipe-image bg-salad">
+                    <span class="recipe-badge">Makanan</span>
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#1b4332" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 6v12M6 12h12"/></svg>
+                </div>
+                <div class="recipe-content">
+                    <div class="recipe-meta">
+                        <span>⏰ 20 Menit</span>
+                        <span>🔥 Sedang</span>
+                    </div>
+                    <h2 class="recipe-title">Salad Dada Ayam Panggang</h2>
+                    <p class="recipe-desc">Menu makan siang kaya protein esensial dan vitamin dari sayuran segar untuk mendukung metabolisme tubuh.</p>
+                    
+                    <div class="recipe-details-section">
+                        <h3 class="section-title">Bahan Utama:</h3>
+                        <ul class="recipe-list">
+                            <li>150g Dada ayam (maronasi dengan lada & garam)</li>
+                            <li>1 ikat Selada segar & Tomat ceri</li>
+                            <li>1/2 buah Mentimun & Jagung pipil rebus</li>
+                            <li>1 sdm Olive oil & perasan Jeruk Lemon</li>
+                        </ul>
+
+                        <h3 class="section-title">Cara Membuat:</h3>
+                        <ul class="recipe-list">
+                            <li>Panggang dada ayam di teflon anti lengket hingga matang, lalu iris tipis.</li>
+                            <li>Potong selada, mentimun, dan tomat ceri sesuai selera.</li>
+                            <li>Campur semua bahan di mangkuk, siram dengan olive oil dan lemon juice.</li>
+                        </ul>
+                    </div>
+
+                    <div class="nutrition-tags">
+                        <span class="tag">Tinggi Protein</span>
+                        <span class="tag">Rendah Karbo</span>
+                        <span class="tag">Kaya Vitamin</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="recipe-card">
+                <div class="recipe-image bg-smoothie">
+                    <span class="recipe-badge">Minuman</span>
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#1b4332" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 2v6M14 2v6"/></svg>
+                </div>
+                <div class="recipe-content">
+                    <div class="recipe-meta">
+                        <span>⏰ 10 Menit</span>
+                        <span>🔥 Mudah</span>
+                    </div>
+                    <h2 class="recipe-title">Berry Detox Smoothie</h2>
+                    <p class="recipe-desc">Minuman antioksidan tinggi yang menyegarkan, sangat baik untuk kesehatan kulit dan pencernaan Anda.</p>
+                    
+                    <div class="recipe-details-section">
+                        <h3 class="section-title">Bahan Utama:</h3>
+                        <ul class="recipe-list">
+                            <li>1 cangkir Stroberi / Stroberi beku</li>
+                            <li>1/2 buah Pisang (untuk tekstur creamy)</li>
+                            <li>150 ml Plain Yogurt / Greek Yogurt</li>
+                            <li>1 sdt Madu murni (opsional)</li>
+                        </ul>
+
+                        <h3 class="section-title">Cara Membuat:</h3>
+                        <ul class="recipe-list">
+                            <li>Masukkan semua buah dan yogurt ke dalam blender.</li>
+                            <li>Blender hingga teksturnya benar-benar halus dan lembut.</li>
+                            <li>Tuang ke gelas, tambahkan madu di atasnya jika ingin lebih manis.</li>
+                        </ul>
+                    </div>
+
+                    <div class="nutrition-tags">
+                        <span class="tag">Antioksidan</span>
+                        <span class="tag">Probiotik</span>
+                        <span class="tag">Tanpa Gula Pasir</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="recipe-card">
+                <div class="recipe-image bg-drink">
+                    <span class="recipe-badge">Minuman</span>
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#1b4332" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"/></svg>
+                </div>
+                <div class="recipe-content">
+                    <div class="recipe-meta">
+                        <span>⏰ 5 Menit</span>
+                        <span>🔥 Sangat Mudah</span>
+                    </div>
+                    <h2 class="recipe-title">Infused Water Lemon Mint</h2>
+                    <p class="recipe-desc">Hidrasi tubuh secara maksimal dengan air detoks penangkal radikal bebas dan membantu membakar lemak.</p>
+                    
+                    <div class="recipe-details-section">
+                        <h3 class="section-title">Bahan Utama:</h3>
+                        <ul class="recipe-list">
+                            <li>500 ml Air mineral matang</li>
+                            <li>1/2 buah Lemon (cuci bersih, iris tipis)</li>
+                            <li>5 lembar Daun mint segar (diremas sedikit)</li>
+                            <li>Es batu secukupnya</li>
+                        </ul>
+
+                        <h3 class="section-title">Cara Membuat:</h3>
+                        <ul class="recipe-list">
+                            <li>Masukkan irisan lemon dan daun mint ke dalam botol berisi air.</li>
+                            <li>Simpan di dalam kulkas minimal selama 1 hingga 2 jam agar sari lemon meresap.</li>
+                            <li>Tambahkan es batu saat ingin diminum di siang hari yang terik.</li>
+                        </ul>
+                    </div>
+
+                    <div class="nutrition-tags">
+                        <span class="tag">Nol Kalori</span>
+                        <span class="tag">Detox</span>
+                        <span class="tag">Sangat Segar</span>
+                    </div>
+                </div>
+            </article>
+
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 NutriBite. Dibuat dengan cinta untuk hidup yang lebih sehat.</p>
+    </footer>
+
+</body>
+</html>
 
